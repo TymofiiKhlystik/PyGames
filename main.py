@@ -41,6 +41,16 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_r:
+                game_over = False
+                score = 0
+                circle_first_collide = False
+
+                platform_rect.centerx = WIDTH // 2
+                circle_rect.center = [WIDTH // 2, HEIGHT // 2]
+                circle_speed_x = 0
+                circle_speed_y = CIRCLE_SPEED
 
     screen.fill(BLACK)
 
@@ -84,9 +94,11 @@ while True:
     pygame.draw.circle(screen, WHITE, circle_rect.center, CIRCLE_RADIUS)
     score_surface = ARIAL_FOND_54.render(str(score), True, WHITE)
     if not game_over:
-        score_surface = ARIAL_FOND_54.render(str(score), True, WHITE)
         screen.blit(score_surface, [0, 15])
-
+    else:
+        retry_surface = ARIAL_FOND_60.render("press R to restart", True, WHITE)
+        screen.blit(score_surface, [WIDTH // 2, HEIGHT // 3])
+        screen.blit(retry_surface, [WIDTH // 2 - retry_surface.get_width() // 2, HEIGHT // 2])
     pygame.display.update()
 
     clock.tick(FPS)
