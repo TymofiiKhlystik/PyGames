@@ -1,4 +1,5 @@
 import pygame
+from random import randint
 
 pygame.init()
 
@@ -19,13 +20,31 @@ platform_rect = pygame.rect.Rect(WIDTH // 2 - PLATFORM_WIDTH / 2,
                                  PLATFORM_WIDTH,
                                  PLATFORM_HEIGHT)
 
-game = False
+circle_first_collide = False
+CIRCLE_RADIUS = 15
+CIRCLE_SPEED = 10
+circle_speed_x = 0
+circle_speed_y = CIRCLE_SPEED
+circle_rect = pygame.rect.Rect(WIDTH // 2 - CIRCLE_RADIUS,
+                               HEIGHT // 2 - CIRCLE_RADIUS,
+                               CIRCLE_RADIUS * 2,
+                               CIRCLE_RADIUS * 2)
+
+score = 0
+
+ARIAL_FOND_PATH = pygame.font.match_font("alial")
+ARIAL_FOND_60 = pygame.font.Font(ARIAL_FOND_PATH, 60)
+ARIAL_FOND_54 = pygame.font.Font(ARIAL_FOND_PATH, 54)
+
+game_over = False
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit()
 
-    if not game:
+    screen.fill(BLACK)
+
+    if not game_over:
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             platform_rect.x -= SPEED_PLATFORM
@@ -36,9 +55,40 @@ while True:
             if platform_rect.x > WIDTH-platform_rect.width:
                 platform_rect.x = WIDTH-platform_rect.width
 
-    screen.fill(BLACK)
-    pygame.draw.rect(screen, WHITE, platform_rect)
+        if platform_rect.colliderect(circle_rect):
+            if not circle_first_collide:
+                if randint(0, 1) == 0:
+                    circle_speed_x = CIRCLE_SPEED
+                else:
+                    circle_speed_x = -CIRCLE_SPEED
+                circle_first_collide = True
+
+            score += 1
+            circle_speed_y = -CIRCLE_SPEED
+
+        pygame.draw.rect(screen, WHITE, platform_rect)
+
+    circle_rect.x += circle_speed_x
+    circle_rect.y += circle_speed_y
+
+    if circle_rect.bottom >= HEIGHT:
+        game_over = True
+        circle_speed_y = -CIRCLE_SPEED
+    if circle_rect.top <= 0:
+        circle_speed_y = CIRCLE_SPEED
+    if circle_rect.left <= 0:
+        circle_speed_x = CIRCLE_SPEED
+    if circle_rect.right >= WIDTH:
+        circle_speed_x = -CIRCLE_SPEED
+
+    pygame.draw.circle(screen, WHITE, circle_rect.center, CIRCLE_RADIUS)
+    score_surface = ARIAL_FOND_54.render(str(score), True, WHITE)
+    if not game_over:
+        score_surface = ARIAL_FOND_54.render(str(score), True, WHITE)
+        screen.blit(score_surface, [0, 15])
+
     pygame.display.update()
+
     clock.tick(FPS)
 
 
