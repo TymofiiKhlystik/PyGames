@@ -68,7 +68,6 @@ while True:
     screen.fill(BLACK)
 
     if not game_over:
-
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             platform_rect.x -= SPEED_PLATFORM
@@ -86,6 +85,7 @@ while True:
                 else:
                     circle_speed_x = -CIRCLE_SPEED
                 circle_first_collide = True
+
             score += 1
             if score > 10:
                 CIRCLE_SPEED += 0.1
@@ -112,6 +112,7 @@ while True:
     pygame.draw.circle(screen, WHITE, circle_rect.center, CIRCLE_RADIUS)
     score_surface = ARIAL_FOND_54.render(str(score), True, WHITE)
     if not game_over:
+        score_surface = ARIAL_FOND_54.render(str(score), True, WHITE)
         screen.blit(score_surface, [0, 15])
     else:
         retry_surface = ARIAL_FOND_60.render("press R to restart", True, WHITE)
