@@ -11,7 +11,7 @@ class Meteor(pg.sprite.Sprite):
         self.add(group)
 
     def update(self, *args):
-        if self.rect.y < args[0] - 20:
+        if self.rect.y < args[0] - 50:
             self.rect.y += self.speed
         else:
             self.kill()
