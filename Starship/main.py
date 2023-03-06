@@ -109,3 +109,4 @@ while True:
     bullet_group.update()
     clock.tick(FPS)
     meteors.update(HEIGHT)
+
