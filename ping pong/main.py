@@ -5,7 +5,7 @@ pygame.mixer.pre_init(44100, -16, 1, 512)
 pygame.init()
 
 WIDTH, HEIGHT = 860, 540
-FPS = 60
+FPS = 30
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
